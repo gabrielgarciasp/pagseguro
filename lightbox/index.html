@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+</head>
+<body>
+
+	<button onclick="gerar_compra();">Comprar</button>
+
+	<script>
+		function gerar_compra(){
+			$.ajax({
+				type: 'POST',
+				url: 'checkout.php',
+				data: {pedido: 1},
+				success: function(retorno){
+					//PagSeguroLightbox(retorno);//FORMA MAIS SIMPLES DE ABRIR
+					var code = retorno;
+					var isOpenLightbox = PagSeguroLightbox({
+						code: code
+					}, {
+						success : function(transactionCode) {
+							alert('success - '+transactionCode);
+						},
+						abort : function() {
+							alert('abort');
+						}
+					});
+					// Redirecionando o cliente caso o navegador não tenha suporte ao Lightbox
+					if (!isOpenLightbox){
+						location.href="https://pagseguro.uol.com.br/v2/checkout/payment.html?code="+code;
+						//location.href="https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code="+code;
+					}
+				}
+			});			
+		}
+	</script>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js"></script>
+
+	<!-- <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js"></script> -->
+
+</body>
+</html>

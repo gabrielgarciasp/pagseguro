@@ -1,0 +1,3 @@
+É necessário ter permissões na pasta onde os arquivos checkout.php e notificacao.php estiverem, pois são gerados logs (arquivos txt).
+
+Para funcionar corretamente, é necessário estar hospedado.

@@ -11,11 +11,11 @@ if(!isset($_POST["notificationCode"]))
 $notificationCode = preg_replace('/[^[:alnum:]-]/','',$_POST["notificationCode"]);
 
 $data = array(
-	'token' => 'SEU TOKEN',
-	'email' => 'SEU E-MAIL'
+	'email' => 'SEU E-MAIL',
+	'token' => 'SEU TOKEN'
 );
 
-$data = http_build_query($data);
+$data = http_build_query($data);//PREPARA A ARRAY PARA SER ENVIADA COMO GET
 
 $url = 'https://ws.pagseguro.uol.com.br/v3/transactions/notifications/'.$notificationCode.'?'.$data;
 //$url = 'https://ws.sandbox.pagseguro.uol.com.br/v3/transactions/notifications/'.$notificationCode.'?'.$data;

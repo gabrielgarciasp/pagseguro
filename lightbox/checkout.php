@@ -21,6 +21,8 @@ PARA USAR O FRETE DO PAGSEGURO, (ENVIO FÁCIL) É NECESSARIO CONSIGURAR NA CONTA
 
 NO AMBIENTE SANDBOX, NÃO É POSSIVEL VER OS DADOS PESSOIS DO COMPRADOR (NOME, EMAIL...)
 
+É IMPORTANTE SALVAR CÓDIGO DA TRANSAÇÃO, POIS EM OPERAÇÕES COMO EXTORNO OU CANCELAMENTO, É NECESSÁRIO TER O CÓDIGO
+
 LISTA COM TODOS PARÂMETROS
 https://m.pagseguro.uol.com.br/v3/guia-de-integracao/api-de-pagamentos.html#!v2-item-api-de-pagamentos-parametros-api
 ----------------------------------------------------------------------------------------------------------------------*/
@@ -32,8 +34,8 @@ $pedido = $_POST['pedido'];
 
 $data = array(
 	//DADOS DO VENDEDOR
-	'token' => 'SEU TOKEN',
 	'email' => 'SEU E-MAIL',
+	'token' => 'TOKEN',
 	//DADOS DO COMPRADOR
 	'senderEmail' => 'aanthonymarciodapaz@xerocopiadora.com.br',
 	'senderName' => 'Anthony Márcio da Paz',
@@ -80,18 +82,18 @@ curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curl, CURLOPT_URL, $url);
 curl_setopt($curl, CURLOPT_POST, true);
 curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-$xml = curl_exec($curl);
+$retorno = curl_exec($curl);
 curl_close($curl);
 
 //SALVA O RETORNO NO LOG
 $fp = fopen('log/log_pedido_'.$pedido.'.txt', 'a');//'a' ABRE O ARQUIVO
 fwrite($fp, "---------- GERAÇÃO DO PEDIDO ----------".date('Y-m-d H:i')."\n\n");
-fwrite($fp, $xml."\n\n");
+fwrite($fp, $retorno."\n\n");
 fwrite($fp, "\n\n");
 fclose($fp);
 
 //RETORNA O CODIGO DA COMPRA PARA ABRIR O LIGHTBOX
-$xml = simplexml_load_string($xml);
-echo $xml -> code;
+$retorno = simplexml_load_string($retorno);
+echo $retorno->code;
 
 ?>
